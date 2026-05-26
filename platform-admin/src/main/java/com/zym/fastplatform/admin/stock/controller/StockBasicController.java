@@ -2,11 +2,11 @@
 package com.zym.fastplatform.admin.stock.controller;
 
 
-import com.zym.fastplatform.framework.controller.BaseController;
+import com.zym.fastplatform.admin.framework.controller.BaseController;
 import com.zym.fastplatform.stock.entity.StockBasic;
 import com.zym.fastplatform.stock.entity.dto.StockBasicDTO;
 import com.zym.fastplatform.stock.entity.vo.StockBasicVO;
-import com.zym.fastplatform.stock.service.StockBasicService;
+import com.zym.fastplatform.admin.stock.service.StockBasicService;
 import com.zym.fastplatform.framework.entity.Result;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;

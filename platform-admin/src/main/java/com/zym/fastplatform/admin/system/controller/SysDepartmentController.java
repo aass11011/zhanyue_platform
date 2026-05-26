@@ -3,7 +3,7 @@ package com.zym.fastplatform.admin.system.controller;
 import com.zym.fastplatform.framework.entity.Result;
 import com.zym.fastplatform.system.entity.dto.DepartmentDTO;
 import com.zym.fastplatform.system.entity.vo.DepartmentVO;
-import com.zym.fastplatform.system.service.SysDepartmentService;
+import com.zym.fastplatform.admin.system.service.SysDepartmentService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

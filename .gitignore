@@ -6,6 +6,7 @@ target/
 **/src/main/**/resources/application.yml
 **/src/main/**/resources/application**.yml
 
+/logs/**
 ### IntelliJ IDEA ###
 .idea/modules.xml
 .idea/jarRepositories.xml

@@ -37,8 +37,6 @@ public class SysRole extends BaseEntity {
     @Column
     private Integer orderNum;
 
-    private Integer status;
-
     @ManyToMany
     @JoinTable(
             name = "sys_role_menu",

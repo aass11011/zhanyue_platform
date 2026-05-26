@@ -1,7 +1,7 @@
 package com.zym.fastplatform.admin.system.controller;
 
 import com.zym.fastplatform.framework.entity.Result;
-import com.zym.fastplatform.system.service.SystemService;
+import com.zym.fastplatform.admin.system.service.SystemService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;

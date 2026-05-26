@@ -6,7 +6,7 @@ import com.zym.fastplatform.framework.entity.Result;
 import com.zym.fastplatform.system.entity.SysRole;
 import com.zym.fastplatform.system.entity.dto.SysRoleDTO;
 import com.zym.fastplatform.system.entity.vo.SysRoleVO;
-import com.zym.fastplatform.system.service.SysRoleService;
+import com.zym.fastplatform.admin.system.service.SysRoleService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;

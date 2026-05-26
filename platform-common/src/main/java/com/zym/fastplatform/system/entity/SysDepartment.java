@@ -17,7 +17,6 @@ public class SysDepartment extends BaseEntity {
     private Long id;
     private String name;
     private Long parentId;
-    private Integer status;
     @Transient
     private List<SysDepartment> children;
 }

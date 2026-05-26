@@ -61,12 +61,4 @@ public class StockCase extends BaseEntity {
     */
     @Column
     private String tags;
-
-    /**
-    * 状态（1：发布，0：编辑中）
-    */
-    @Column
-    private String status;
-
-
 }

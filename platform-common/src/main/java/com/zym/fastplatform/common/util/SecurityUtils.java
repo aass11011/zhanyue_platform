@@ -85,7 +85,7 @@ public final class SecurityUtils {
         sysUser.setIdCard(customUserDetails.getIdCard());
         sysUser.setNickname(customUserDetails.getNickname());
         sysUser.setBirthday(customUserDetails.getBirthday());
-        sysUser.setStatus(customUserDetails.getStatus());
+        sysUser.setStatus(customUserDetails.getStatus().byteValue());
         sysUser.setLastLogin(customUserDetails.getLastLogin());
         sysUser.setRoles(customUserDetails.getRoles());
         return sysUser;

@@ -20,5 +20,4 @@ public class SysDictType extends BaseEntity {
     private String dictType;
     private Integer sortOrder;
     private String description;
-    private Integer status;
 }

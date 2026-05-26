@@ -51,8 +51,6 @@ public class StockBasic extends BaseEntity {
     @ExcelProperty("概念")
     @FuzzyQuery
     private String concept;
-    @ExcelProperty(value = "状态",converter = ByteEnumConverter.class)
-    private Byte status;
     @Column(name="is_suspended")
     @ExcelIgnore
     private Byte suspendedFlag;

@@ -3,7 +3,7 @@ package com.zym.fastplatform.admin.system.controller;
 import com.zym.fastplatform.system.entity.RegisteUser;
 import com.zym.fastplatform.framework.entity.Result;
 import com.zym.fastplatform.system.entity.SysUser;
-import com.zym.fastplatform.system.service.SysUserService;
+import com.zym.fastplatform.admin.system.service.SysUserService;
 import com.zym.fastplatform.framework.utils.JwtUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;

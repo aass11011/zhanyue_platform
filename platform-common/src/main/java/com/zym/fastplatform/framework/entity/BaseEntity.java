@@ -24,4 +24,6 @@ public class BaseEntity {
     @ExcelIgnore
     private LocalDateTime updatedTime;
     private String remark;
+
+    private Byte status;
 }

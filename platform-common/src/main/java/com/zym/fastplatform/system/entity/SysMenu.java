@@ -70,8 +70,6 @@ public class SysMenu extends BaseEntity {
     @Column
     @Convert(converter = HideFlagConverter.class)
     private Boolean canTo;
-    @Column
-    private Integer status;
     @OneToMany(mappedBy = "menuId",cascade = CascadeType.ALL,orphanRemoval = true)
     @JsonIgnore
     private List<SysPermission> permissions;

@@ -23,5 +23,4 @@ public class SysDictData extends BaseEntity {
     @FuzzyQuery
     private String dictName;
     private String dictValue;
-    private Integer status;
 }

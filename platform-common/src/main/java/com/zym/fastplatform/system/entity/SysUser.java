@@ -29,7 +29,6 @@ public class SysUser extends BaseEntity implements UserDetails {
     private String email;
     private String phone;
     private LocalDate birthday;
-    private Integer status;
     private LocalDateTime lastLogin;
     private String salt;
     @FuzzyQuery(ignore = true)
