@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @EnableJpaAuditing
 @EnableJpaRepositories(basePackages = {"com.zym.fastplatform"})
-@SpringBootApplication(scanBasePackages = {"com.zym.fastplatform.portal","com.zym.fastplatform.stock"},exclude = {SecurityAutoConfiguration.class})
+@SpringBootApplication(scanBasePackages = {"com.zym.fastplatform.portal","com.zym.fastplatform.stock","com.zym.fastplatform.common"},exclude = {SecurityAutoConfiguration.class})
 @EntityScan(basePackages = {"com.zym.fastplatform"})
 public class PortalApplication {
     public static void main(String[] args) {

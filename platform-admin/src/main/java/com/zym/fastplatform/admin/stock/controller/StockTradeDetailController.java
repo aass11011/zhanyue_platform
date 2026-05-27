@@ -5,7 +5,7 @@ import com.zym.fastplatform.stock.entity.vo.TradeDensityVO;
 import com.zym.fastplatform.stock.entity.vo.StockTradeDayAnalysisVO;
 import com.zym.fastplatform.stock.entity.vo.StockTradeEchartVO;
 import com.zym.fastplatform.stock.entity.vo.StockTradeRangeAnalysisVO;
-import com.zym.fastplatform.admin.stock.service.StockTradeDetailService;
+import com.zym.fastplatform.stock.service.StockTradeDetailService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

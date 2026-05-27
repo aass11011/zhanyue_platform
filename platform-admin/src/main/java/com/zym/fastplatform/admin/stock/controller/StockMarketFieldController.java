@@ -4,7 +4,7 @@ import com.zym.fastplatform.admin.framework.controller.BaseController;
 import com.zym.fastplatform.stock.entity.StockMarketField;
 import com.zym.fastplatform.stock.entity.dto.StockMarketFieldDTO;
 import com.zym.fastplatform.stock.entity.vo.StockMarketFieldVO;
-import com.zym.fastplatform.admin.stock.service.StockMarketFieldService;
+import com.zym.fastplatform.stock.service.StockMarketFieldService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

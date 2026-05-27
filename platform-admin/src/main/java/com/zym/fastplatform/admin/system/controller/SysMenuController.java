@@ -5,7 +5,7 @@ import com.zym.fastplatform.system.entity.Router;
 import com.zym.fastplatform.system.entity.SysMenu;
 import com.zym.fastplatform.system.entity.dto.SysMenuDTO;
 import com.zym.fastplatform.system.entity.vo.SysMenuVO;
-import com.zym.fastplatform.admin.system.service.SysMenuService;
+import com.zym.fastplatform.system.service.SysMenuService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;

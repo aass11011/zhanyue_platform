@@ -4,7 +4,7 @@ import com.zym.fastplatform.admin.framework.controller.BaseController;
 import com.zym.fastplatform.book.entity.ReadNote;
 import com.zym.fastplatform.book.entity.dto.ReadNoteDTO;
 import com.zym.fastplatform.book.entity.vo.ReadNoteVO;
-import com.zym.fastplatform.admin.book.service.ReadNoteService;
+import com.zym.fastplatform.book.service.ReadNoteService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

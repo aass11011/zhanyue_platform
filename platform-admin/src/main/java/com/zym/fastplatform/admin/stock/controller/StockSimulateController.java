@@ -5,7 +5,7 @@ import com.zym.fastplatform.framework.entity.Result;
 import com.zym.fastplatform.stock.entity.StockSimulate;
 import com.zym.fastplatform.stock.entity.dto.StockSimulateDTO;
 import com.zym.fastplatform.stock.entity.vo.StockSimulateVO;
-import com.zym.fastplatform.admin.stock.service.StockSimulateService;
+import com.zym.fastplatform.stock.service.StockSimulateService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;

@@ -4,7 +4,7 @@ import com.zym.fastplatform.common.util.SecurityUtils;
 import com.zym.fastplatform.framework.entity.BaseDTO;
 import com.zym.fastplatform.framework.entity.BaseEntity;
 import com.zym.fastplatform.framework.entity.Result;
-import com.zym.fastplatform.admin.framework.service.BaseService;
+import com.zym.fastplatform.framework.service.BaseService;
 import com.zym.fastplatform.system.entity.SysUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

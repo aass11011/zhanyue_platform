@@ -5,7 +5,7 @@ import com.zym.fastplatform.framework.entity.Result;
 import com.zym.fastplatform.system.entity.SysUser;
 import com.zym.fastplatform.system.entity.dto.SysUserDTO;
 import com.zym.fastplatform.system.entity.vo.SysUserVO;
-import com.zym.fastplatform.admin.system.service.SysUserService;
+import com.zym.fastplatform.system.service.SysUserService;
 
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;

@@ -3,7 +3,7 @@ package com.zym.fastplatform.portal.framework.controller;
 import com.zym.fastplatform.framework.entity.BaseDTO;
 import com.zym.fastplatform.framework.entity.BaseEntity;
 import com.zym.fastplatform.framework.entity.Result;
-import com.zym.fastplatform.portal.framework.service.BaseService;
+import com.zym.fastplatform.framework.service.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
