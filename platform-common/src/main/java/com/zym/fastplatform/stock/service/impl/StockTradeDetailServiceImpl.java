@@ -332,6 +332,12 @@ public class StockTradeDetailServiceImpl extends BaseServiceImpl<StockTradeDetai
         return resultList;
     }
 
+    @Override
+    public List<StockTradeDay> getStockTradeDayTwoWeekLatest(String stockCode) {
+        List<StockTradeDay> stockTradeDayList = stockTradeDayDao.findByStockCodeAndTradeDateBetween(stockCode, LocalDate.now().minusWeeks(2), LocalDate.now());
+        return stockTradeDayList;
+    }
+
     @NotNull
     private static LocalDate getYesterday() {
         LocalDate yesterday = LocalDate.now().minusDays(1);

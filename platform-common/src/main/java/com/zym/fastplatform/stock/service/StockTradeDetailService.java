@@ -1,6 +1,7 @@
 package com.zym.fastplatform.stock.service;
 
 import com.zym.fastplatform.framework.service.BaseService;
+import com.zym.fastplatform.stock.entity.StockTradeDay;
 import com.zym.fastplatform.stock.entity.StockTradeDetail;
 import com.zym.fastplatform.stock.entity.dto.StockTradeDetailDTO;
 import com.zym.fastplatform.stock.entity.vo.*;
@@ -31,4 +32,6 @@ public interface StockTradeDetailService extends BaseService<StockTradeDetail, S
     List<LocalDate> stockTradeRangeExist(String stockCode);
 
     List<TradeDensityVO> getTradeDensity(String stockCode, LocalDate date, Integer interval);
+
+    List<StockTradeDay> getStockTradeDayTwoWeekLatest(String stockCode);
 }
