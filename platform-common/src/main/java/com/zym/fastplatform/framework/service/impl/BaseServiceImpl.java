@@ -1,5 +1,6 @@
 package com.zym.fastplatform.framework.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.zym.fastplatform.common.util.SecurityUtils;
 import com.zym.fastplatform.framework.annotation.FuzzyQuery;
 import com.zym.fastplatform.framework.annotation.Url;
@@ -179,5 +180,11 @@ public abstract class BaseServiceImpl<D extends BaseDao<T>,T extends BaseEntity,
                java.util.Map.class.isAssignableFrom(clazz) ||
                java.util.Set.class.isAssignableFrom(clazz) ||
                List.class.isAssignableFrom(clazz);
+    }
+
+    @Override
+    public void editStatus(JSONObject t) {
+        String username = getUser().getUsername();
+        dao.updateStatusById(t.getLong("id"),t.getInteger("status"),username);
     }
 }

@@ -1,5 +1,6 @@
 package com.zym.fastplatform.admin.framework.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.zym.fastplatform.common.util.SecurityUtils;
 import com.zym.fastplatform.framework.entity.BaseDTO;
 import com.zym.fastplatform.framework.entity.BaseEntity;
@@ -50,5 +51,11 @@ public class BaseController <S extends BaseService<T,VO,DTO>,T extends BaseEntit
     @GetMapping("findById")
     public Result<VO> findById(@RequestParam(value = "id",required = true) Long id) {
         return Result.ok(service.findVOById(id));
+    }
+
+    @PostMapping("public")
+    public Result<Void> publicStatus(@RequestBody JSONObject t){
+        service.editStatus(t);
+        return Result.ok();
     }
 }

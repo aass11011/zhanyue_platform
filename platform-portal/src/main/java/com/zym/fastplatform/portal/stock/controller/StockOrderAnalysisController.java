@@ -20,8 +20,8 @@ import java.util.List;
 @RequestMapping("/stock/order/analysis")
 public class StockOrderAnalysisController extends BaseController<StockTradeDetailService, StockTradeDetail, StockTradeDetailDTO, StockTradeDetailVO> {
 
-    @GetMapping("list/analysis/two/week")
-    public Result<List<StockTradeDay>> listAnalysisTwoWeek(StockTradeDayDTO stockTradeDayDTO) {
+    @GetMapping("list/two/week")
+    public Result<List<StockTradeDay>> listTwoWeek(StockTradeDayDTO stockTradeDayDTO) {
         return Result.ok(service.getStockTradeDayTwoWeekLatest(stockTradeDayDTO.getStockCode()));
     }
 }

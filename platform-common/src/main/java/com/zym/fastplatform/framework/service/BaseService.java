@@ -1,5 +1,6 @@
 package com.zym.fastplatform.framework.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.zym.fastplatform.framework.entity.BaseDTO;
 import com.zym.fastplatform.framework.entity.BaseEntity;
 import org.springframework.data.domain.Page;
@@ -23,4 +24,6 @@ public interface BaseService <T extends BaseEntity,VO,DTO extends BaseDTO> {
     void save(DTO dto);
 
     List<VO> findAll(String sort,DTO condition);
+
+    void editStatus(JSONObject t);
 }
