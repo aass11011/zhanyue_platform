@@ -80,7 +80,6 @@ public class StockBasicServiceImpl extends BaseServiceImpl<StockBasicDao, StockB
                 sysDictData.setDictType("股票概念");
                 sysDictData.setTypeId("a7aaaa5a-bf17-4609-9c1d-5f7de719e478");
                 sysDictData.setSortOrder(0);
-                sysDictData.setStatus((byte) 1);
                 sysDictDataDao.save(sysDictData);
             }
         }

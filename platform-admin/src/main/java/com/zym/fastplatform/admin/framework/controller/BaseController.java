@@ -52,10 +52,4 @@ public class BaseController <S extends BaseService<T,VO,DTO>,T extends BaseEntit
     public Result<VO> findById(@RequestParam(value = "id",required = true) Long id) {
         return Result.ok(service.findVOById(id));
     }
-
-    @PostMapping("public")
-    public Result<Void> publicStatus(@RequestBody JSONObject t){
-        service.editStatus(t);
-        return Result.ok();
-    }
 }

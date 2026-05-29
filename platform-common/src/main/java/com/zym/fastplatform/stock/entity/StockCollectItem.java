@@ -1,7 +1,6 @@
 package com.zym.fastplatform.stock.entity;
 
 import com.zym.fastplatform.framework.entity.BaseEntity;
-import com.zym.fastplatform.framework.entity.NoStatusBaseEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -11,7 +10,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "stock_collect_item")
-public class StockCollectItem extends NoStatusBaseEntity {
+public class StockCollectItem extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)

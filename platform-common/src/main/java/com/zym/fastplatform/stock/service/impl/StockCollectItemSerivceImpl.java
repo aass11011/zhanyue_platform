@@ -1,6 +1,6 @@
 package com.zym.fastplatform.stock.service.impl;
 
-import com.zym.fastplatform.framework.service.impl.NoStatusBaseServiceImpl;
+import com.zym.fastplatform.framework.service.impl.BaseServiceImpl;
 import com.zym.fastplatform.stock.convert.StockCollectItemConvertMapper;
 import com.zym.fastplatform.stock.dao.StockCollectGroupDao;
 import com.zym.fastplatform.stock.dao.StockCollectItemDao;
@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-public class StockCollectItemSerivceImpl extends NoStatusBaseServiceImpl<StockCollectItemDao,  StockCollectItem, StockCollectItemConvertMapper, StockCollectItemDTO,StockCollectItemVO> implements StockCollectItemSerivce {
+public class StockCollectItemSerivceImpl extends BaseServiceImpl<StockCollectItemDao,  StockCollectItem, StockCollectItemConvertMapper, StockCollectItemDTO,StockCollectItemVO> implements StockCollectItemSerivce {
     @Autowired
     private StockCollectGroupDao stockCollectGroupDao;
     @Override

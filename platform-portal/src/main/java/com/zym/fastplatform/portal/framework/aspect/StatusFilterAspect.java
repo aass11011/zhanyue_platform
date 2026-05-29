@@ -16,8 +16,8 @@ import org.springframework.stereotype.Component;
  * Portal模块专用的状态过滤切面
  * 自动为所有基于BaseEntity的实体类查询添加 status=1 的条件
  */
-@Aspect
-@Component
+//@Aspect
+//@Component
 public class StatusFilterAspect {
 
     /**

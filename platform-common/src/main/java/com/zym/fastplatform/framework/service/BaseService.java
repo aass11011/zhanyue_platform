@@ -24,6 +24,4 @@ public interface BaseService <T extends BaseEntity,VO,DTO extends BaseDTO> {
     void save(DTO dto);
 
     List<VO> findAll(String sort,DTO condition);
-
-    void editStatus(JSONObject t);
 }

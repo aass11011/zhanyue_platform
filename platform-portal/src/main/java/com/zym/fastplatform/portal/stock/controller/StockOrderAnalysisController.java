@@ -6,6 +6,7 @@ import com.zym.fastplatform.stock.entity.StockTradeDay;
 import com.zym.fastplatform.stock.entity.StockTradeDetail;
 import com.zym.fastplatform.stock.entity.dto.StockTradeDayDTO;
 import com.zym.fastplatform.stock.entity.dto.StockTradeDetailDTO;
+import com.zym.fastplatform.stock.entity.vo.StockTradeDayAnalysisVO;
 import com.zym.fastplatform.stock.entity.vo.StockTradeDetailVO;
 import com.zym.fastplatform.stock.service.StockTradeDetailService;
 import lombok.extern.slf4j.Slf4j;
@@ -23,5 +24,10 @@ public class StockOrderAnalysisController extends BaseController<StockTradeDetai
     @GetMapping("list/two/week")
     public Result<List<StockTradeDay>> listTwoWeek(StockTradeDayDTO stockTradeDayDTO) {
         return Result.ok(service.getStockTradeDayTwoWeekLatest(stockTradeDayDTO.getStockCode()));
+    }
+
+    @GetMapping("detail")
+    public Result<StockTradeDayAnalysisVO> detail(StockTradeDayDTO stockTradeDayDTO) {
+        return Result.ok(service.getStockTradeDay(stockTradeDayDTO.getStockCode(),stockTradeDayDTO.getTradeDate()));
     }
 }

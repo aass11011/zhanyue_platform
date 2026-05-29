@@ -1,14 +1,13 @@
 package com.zym.fastplatform.stock.service;
 
 import com.zym.fastplatform.framework.service.BaseService;
-import com.zym.fastplatform.framework.service.NoStatusBaseService;
 import com.zym.fastplatform.stock.entity.StockCollectItem;
 import com.zym.fastplatform.stock.entity.dto.StockCollectItemDTO;
 import com.zym.fastplatform.stock.entity.vo.StockCollectItemVO;
 
 import java.util.List;
 
-public interface StockCollectItemSerivce extends NoStatusBaseService<StockCollectItem, StockCollectItemVO, StockCollectItemDTO> {
+public interface StockCollectItemSerivce extends BaseService<StockCollectItem, StockCollectItemVO, StockCollectItemDTO> {
     List<String> getFavoriteList();
 
     void removeFavorite(String code);

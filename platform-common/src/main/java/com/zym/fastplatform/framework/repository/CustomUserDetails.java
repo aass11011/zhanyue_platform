@@ -26,7 +26,6 @@ public class CustomUserDetails implements UserDetails {
     private String phone;
     private String nickname;
     private LocalDate birthday;
-    private Integer status;
     private LocalDateTime lastLogin;
     private Set<SysRole> roles;
     private Collection<? extends GrantedAuthority> authorities;

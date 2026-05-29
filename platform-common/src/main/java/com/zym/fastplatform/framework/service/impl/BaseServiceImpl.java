@@ -22,6 +22,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -180,11 +181,5 @@ public abstract class BaseServiceImpl<D extends BaseDao<T>,T extends BaseEntity,
                java.util.Map.class.isAssignableFrom(clazz) ||
                java.util.Set.class.isAssignableFrom(clazz) ||
                List.class.isAssignableFrom(clazz);
-    }
-
-    @Override
-    public void editStatus(JSONObject t) {
-        String username = getUser().getUsername();
-        dao.updateStatusById(t.getLong("id"),t.getInteger("status"),username);
     }
 }

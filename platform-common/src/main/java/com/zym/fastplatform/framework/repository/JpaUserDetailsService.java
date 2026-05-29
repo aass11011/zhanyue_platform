@@ -30,6 +30,6 @@ public class JpaUserDetailsService implements UserDetailsService {
         });
 
         return new CustomUserDetails(user.getId(),user.getUsername(),user.getPassword(),user.getGender(),user.getAge(),user.getIdCard(),
-                user.getEmail(),user.getPhone(),user.getNickname(),user.getBirthday(),user.getStatus().intValue(),user.getLastLogin(),user.getRoles(),authorities);
+                user.getEmail(),user.getPhone(),user.getNickname(),user.getBirthday(),user.getLastLogin(),user.getRoles(),authorities);
     }
 }
