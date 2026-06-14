@@ -18,13 +18,8 @@ public class StockBasicVO {
     private String exchange;
     private String marketType;
     private String industry;
-    private LocalDate listingDate;
-    private BigDecimal totalShares;
-    private BigDecimal circulatingShares;
     private String concept;
     private Byte status;
-    private Byte suspendedFlag;
-    private Byte stFlag;
     private LocalDateTime createdTime;
     private String remark;
     private String logo;

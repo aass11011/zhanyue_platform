@@ -43,3 +43,4 @@ build/
 ### minio ###
 minio/data/img/**
 minio/logs/**
+minio/data/.minio.sys/**

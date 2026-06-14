@@ -39,24 +39,9 @@ public class StockBasic extends BaseEntity {
     @ExcelProperty("行业")
     @FuzzyQuery
     private String industry;
-    @ExcelProperty("上市日期")
-    @DateTimeFormat("yyyy-MM-dd")
-    private LocalDate listingDate;
-    @ExcelProperty("总股本")
-    private BigDecimal totalShares;
-    @ExcelProperty("流通股本")
-    private BigDecimal circulatingShares;
-    @ExcelProperty("上市价格")
-    private BigDecimal issuePrice;
     @ExcelProperty("概念")
     @FuzzyQuery
     private String concept;
-    @Column(name="is_suspended")
-    @ExcelIgnore
-    private Byte suspendedFlag;
-    @Column(name="is_st")
-    @ExcelIgnore
-    private Byte stFlag;
     @ExcelIgnore
     @Url
     private String logo;
