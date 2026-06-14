@@ -1,16 +1,14 @@
 package com.zym.fastplatform.portal.framework.aspect;
 
-import com.zym.fastplatform.framework.entity.BaseEntity;
+import com.zym.fastplatform.common.common.framework.entity.BaseEntity;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
-import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.stereotype.Component;
 
 /**
  * Portal模块专用的状态过滤切面
@@ -23,21 +21,21 @@ public class StatusFilterAspect {
     /**
      * 定义切点：拦截BaseDao及其子类的findAll方法（带Specification参数的版本）
      */
-    @Pointcut("execution(* com.zym.fastplatform.framework.dao.BaseDao+.findAll(org.springframework.data.jpa.domain.Specification, ..))")
+    @Pointcut("execution(* com.zym.fastplatform.common.common.framework.dao.BaseDao+.findAll(org.springframework.data.jpa.domain.Specification, ..))")
     public void baseDaoFindAllWithSpecification() {
     }
 
     /**
      * 定义切点：拦截BaseDao及其子类的findAll方法（带Specification和Sort参数的版本）
      */
-    @Pointcut("execution(* com.zym.fastplatform.framework.dao.BaseDao+.findAll(org.springframework.data.jpa.domain.Specification, org.springframework.data.domain.Sort))")
+    @Pointcut("execution(* com.zym.fastplatform.common.common.framework.dao.BaseDao+.findAll(org.springframework.data.jpa.domain.Specification, org.springframework.data.domain.Sort))")
     public void baseDaoFindAllWithSpecificationAndSort() {
     }
 
     /**
      * 定义切点：拦截BaseDao及其子类的findAll方法（带Specification和Pageable参数的版本）
      */
-    @Pointcut("execution(* com.zym.fastplatform.framework.dao.BaseDao+.findAll(org.springframework.data.jpa.domain.Specification, org.springframework.data.domain.Pageable))")
+    @Pointcut("execution(* com.zym.fastplatform.common.common.framework.dao.BaseDao+.findAll(org.springframework.data.jpa.domain.Specification, org.springframework.data.domain.Pageable))")
     public void baseDaoFindAllWithSpecificationAndPageable() {
     }
 

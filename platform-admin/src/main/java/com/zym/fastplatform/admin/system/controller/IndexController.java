@@ -1,10 +1,10 @@
 package com.zym.fastplatform.admin.system.controller;
 
-import com.zym.fastplatform.system.entity.RegisteUser;
-import com.zym.fastplatform.framework.entity.Result;
-import com.zym.fastplatform.system.entity.SysUser;
-import com.zym.fastplatform.system.service.SysUserService;
-import com.zym.fastplatform.framework.utils.JwtUtil;
+import com.zym.fastplatform.common.system.entity.RegisteUser;
+import com.zym.fastplatform.common.common.framework.entity.Result;
+import com.zym.fastplatform.common.system.entity.SysUser;
+import com.zym.fastplatform.common.system.service.SysUserService;
+import com.zym.fastplatform.common.common.framework.utils.JwtUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;

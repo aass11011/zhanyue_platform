@@ -1,9 +1,9 @@
 package com.zym.fastplatform.admin.system.controller;
 
-import com.zym.fastplatform.framework.entity.Result;
-import com.zym.fastplatform.system.entity.dto.SysDictTypeDTO;
-import com.zym.fastplatform.system.entity.vo.SysDictTypeVO;
-import com.zym.fastplatform.system.service.SysDictTypeService;
+import com.zym.fastplatform.common.common.framework.entity.Result;
+import com.zym.fastplatform.common.system.entity.dto.SysDictTypeDTO;
+import com.zym.fastplatform.common.system.entity.vo.SysDictTypeVO;
+import com.zym.fastplatform.common.system.service.SysDictTypeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

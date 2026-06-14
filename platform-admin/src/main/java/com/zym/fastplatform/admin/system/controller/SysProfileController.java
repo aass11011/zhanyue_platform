@@ -1,10 +1,10 @@
 package com.zym.fastplatform.admin.system.controller;
 
-import com.zym.fastplatform.common.util.SecurityUtils;
-import com.zym.fastplatform.framework.entity.Result;
-import com.zym.fastplatform.system.entity.SysUser;
-import com.zym.fastplatform.system.entity.dto.PwdDTO;
-import com.zym.fastplatform.system.service.SysUserService;
+import com.zym.fastplatform.common.common.util.SecurityUtils;
+import com.zym.fastplatform.common.common.framework.entity.Result;
+import com.zym.fastplatform.common.system.entity.SysUser;
+import com.zym.fastplatform.common.system.entity.dto.PwdDTO;
+import com.zym.fastplatform.common.system.service.SysUserService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;

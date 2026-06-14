@@ -1,8 +1,8 @@
 package com.zym.fastplatform.admin.system.controller;
 
-import com.zym.fastplatform.framework.entity.Result;
-import com.zym.fastplatform.system.entity.vo.UserRolesVO;
-import com.zym.fastplatform.system.service.SysUserRoleService;
+import com.zym.fastplatform.common.common.framework.entity.Result;
+import com.zym.fastplatform.common.system.entity.vo.UserRolesVO;
+import com.zym.fastplatform.common.system.service.SysUserRoleService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;

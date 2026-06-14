@@ -1,9 +1,9 @@
 package com.zym.fastplatform.admin.stock.controller;
 
-import com.zym.fastplatform.framework.entity.Result;
-import com.zym.fastplatform.stock.entity.dto.StockMarketDataDTO;
-import com.zym.fastplatform.stock.entity.vo.StockMarketDataVO;
-import com.zym.fastplatform.stock.service.StockMarketDataService;
+import com.zym.fastplatform.common.common.framework.entity.Result;
+import com.zym.fastplatform.common.stock.entity.dto.StockMarketDataDTO;
+import com.zym.fastplatform.common.stock.entity.vo.StockMarketDataVO;
+import com.zym.fastplatform.common.stock.service.StockMarketDataService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

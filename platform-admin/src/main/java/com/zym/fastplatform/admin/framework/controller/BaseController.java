@@ -1,12 +1,11 @@
 package com.zym.fastplatform.admin.framework.controller;
 
-import com.alibaba.fastjson.JSONObject;
-import com.zym.fastplatform.common.util.SecurityUtils;
-import com.zym.fastplatform.framework.entity.BaseDTO;
-import com.zym.fastplatform.framework.entity.BaseEntity;
-import com.zym.fastplatform.framework.entity.Result;
-import com.zym.fastplatform.framework.service.BaseService;
-import com.zym.fastplatform.system.entity.SysUser;
+import com.zym.fastplatform.common.common.util.SecurityUtils;
+import com.zym.fastplatform.common.common.framework.entity.BaseDTO;
+import com.zym.fastplatform.common.common.framework.entity.BaseEntity;
+import com.zym.fastplatform.common.common.framework.entity.Result;
+import com.zym.fastplatform.common.common.framework.service.BaseService;
+import com.zym.fastplatform.common.system.entity.SysUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;

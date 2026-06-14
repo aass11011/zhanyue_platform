@@ -1,10 +1,10 @@
 package com.zym.fastplatform.admin.stock.controller;
 
 import com.zym.fastplatform.admin.framework.controller.BaseController;
-import com.zym.fastplatform.stock.entity.StockCollectGroup;
-import com.zym.fastplatform.stock.entity.dto.StockCollectGroupDTO;
-import com.zym.fastplatform.stock.entity.vo.StockCollectGroupVO;
-import com.zym.fastplatform.stock.service.StockCollectGroupSerivce;
+import com.zym.fastplatform.common.stock.entity.StockCollectGroup;
+import com.zym.fastplatform.common.stock.entity.dto.StockCollectGroupDTO;
+import com.zym.fastplatform.common.stock.entity.vo.StockCollectGroupVO;
+import com.zym.fastplatform.common.stock.service.StockCollectGroupSerivce;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

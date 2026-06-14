@@ -1,10 +1,10 @@
 package com.zym.fastplatform.admin.stock.controller;
 
 import com.zym.fastplatform.admin.framework.controller.BaseController;
-import com.zym.fastplatform.stock.entity.StockBehaviour;
-import com.zym.fastplatform.stock.entity.dto.StockBehaviourDTO;
-import com.zym.fastplatform.stock.entity.vo.StockBehaviourVO;
-import com.zym.fastplatform.stock.service.StockBehaviourService;
+import com.zym.fastplatform.common.stock.entity.StockBehaviour;
+import com.zym.fastplatform.common.stock.entity.dto.StockBehaviourDTO;
+import com.zym.fastplatform.common.stock.entity.vo.StockBehaviourVO;
+import com.zym.fastplatform.common.stock.service.StockBehaviourService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

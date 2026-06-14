@@ -1,12 +1,12 @@
 package com.zym.fastplatform.admin.system.controller;
 
-import com.zym.fastplatform.system.convert.SysRoleConvertMapper;
-import com.zym.fastplatform.system.convert.SysUserConvertMapper;
-import com.zym.fastplatform.framework.entity.Result;
-import com.zym.fastplatform.system.entity.SysRole;
-import com.zym.fastplatform.system.entity.dto.SysRoleDTO;
-import com.zym.fastplatform.system.entity.vo.SysRoleVO;
-import com.zym.fastplatform.system.service.SysRoleService;
+import com.zym.fastplatform.common.system.convert.SysRoleConvertMapper;
+import com.zym.fastplatform.common.system.convert.SysUserConvertMapper;
+import com.zym.fastplatform.common.common.framework.entity.Result;
+import com.zym.fastplatform.common.system.entity.SysRole;
+import com.zym.fastplatform.common.system.entity.dto.SysRoleDTO;
+import com.zym.fastplatform.common.system.entity.vo.SysRoleVO;
+import com.zym.fastplatform.common.system.service.SysRoleService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;

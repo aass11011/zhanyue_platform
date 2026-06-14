@@ -1,0 +1,34 @@
+package com.zym.fastplatform.common.stock.entity;
+
+import com.zym.fastplatform.common.common.framework.entity.BaseEntity;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
+@Entity
+@Table(name = "stock_market_data")
+@Getter
+@Setter
+public class StockMarketData extends BaseEntity {
+
+    /**
+    * 主键
+    */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    /**
+    * stock_market_field
+    */
+    @Column
+    private Long fieldId;
+
+    /**
+    * 字段值
+    */
+    @Column
+    private String fieldValue;
+    @Column
+    private Long recordId;
+}
