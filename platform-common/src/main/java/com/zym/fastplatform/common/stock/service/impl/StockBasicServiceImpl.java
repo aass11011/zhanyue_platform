@@ -13,6 +13,7 @@ import com.zym.fastplatform.common.common.framework.exception.ZException;
 import com.zym.fastplatform.common.common.framework.service.impl.BaseServiceImpl;
 import com.zym.fastplatform.common.common.framework.utils.PictureUtil;
 import com.zym.fastplatform.common.common.framework.utils.StringUtils;
+import com.zym.fastplatform.common.common.framework.utils.PinyinUtil;
 import com.zym.fastplatform.common.stock.convert.StockBasicConvertMapper;
 import com.zym.fastplatform.common.stock.dao.StockBasicDao;
 import com.zym.fastplatform.common.stock.entity.StockBasic;
@@ -33,6 +34,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 @Slf4j
@@ -54,6 +60,7 @@ public class StockBasicServiceImpl extends BaseServiceImpl<StockBasicDao, StockB
                 throw new ZException("股票代码已存在");
             }
         }
+        entity.setStockShortName(PinyinUtil.toUpperFirstLetter(entity.getStockFullName()));
         fillExchangeAndMarket(stockCode, entity);
         if(dto.getConceptList() != null && !dto.getConceptList().isEmpty()){
             entity.setConcept(StringUtils.join(dto.getConceptList(),","));
@@ -110,89 +117,86 @@ public class StockBasicServiceImpl extends BaseServiceImpl<StockBasicDao, StockB
     @Override
     @Transactional
     public void getByStockCode(String stockCode) {
-        // 首先从数据库查询
         StockBasic stockBasic = dao.findByStockCode(stockCode);
         
-        // 如果不存在，从akshare获取
         if (stockBasic == null) {
             try {
-                // 调用Python脚本获取股票信息
-                // 构建脚本路径
-                String pythonScriptPath = System.getProperty("user.dir") + "/python/get_stock_basic.py";
-                // 检查Python是否可用
-                try {
-                    Process checkProcess = Runtime.getRuntime().exec( "python --version");
-                    int exitCode = checkProcess.waitFor();
-                    if (exitCode != 0) {
-                        throw new ZException("Python解释器未找到，请确保Docker容器中已安装Python");
-                    }
-                } catch (Exception e) {
-                    throw new ZException("Python解释器未找到，请确保Docker容器中已安装Python: " + e.getMessage());
+                String marketPrefix = stockCode.startsWith("6") ? "sh" : "sz";
+                String url = "http://hq.sinajs.cn/list=" + marketPrefix + stockCode;
+                
+                HttpClient client = HttpClient.newHttpClient();
+                HttpRequest request = HttpRequest.newBuilder()
+                        .uri(URI.create(url))
+                        .header("User-Agent", "Mozilla/5.0")
+                        .GET()
+                        .build();
+                
+                HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
+                
+                if (response.statusCode() != 200) {
+                    throw new ZException("获取股票信息失败，HTTP状态码: " + response.statusCode());
                 }
                 
-                Process process = Runtime.getRuntime().exec("python " + pythonScriptPath + " " + stockCode);
-                
-                // 读取脚本输出
-                java.io.BufferedReader reader = new java.io.BufferedReader(
-                    new java.io.InputStreamReader(process.getInputStream(), java.nio.charset.StandardCharsets.UTF_8)
-                );
-                java.io.BufferedReader errorReader = new java.io.BufferedReader(
-                    new java.io.InputStreamReader(process.getErrorStream(), java.nio.charset.StandardCharsets.UTF_8)
-                );
-                
-                // 读取所有输出行
-                StringBuilder outputBuilder = new StringBuilder();
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    outputBuilder.append(line);
-                }
-                String output = outputBuilder.toString();
-                
-                // 读取所有错误行
-                StringBuilder errorBuilder = new StringBuilder();
-                while ((line = errorReader.readLine()) != null) {
-                    errorBuilder.append(line).append("\n");
-                }
-                String error = errorBuilder.toString();
-                
-                process.waitFor();
-                
-                if (!error.isEmpty()) {
-                    log.error("Python脚本执行错误: {}", error);
-                    throw new ZException("获取股票信息失败: " + error);
+                String result = response.body();
+                if (result == null || result.isEmpty()) {
+                    throw new ZException("获取股票信息失败，返回数据为空");
                 }
                 
-                if (output != null) {
-                    // 解析JSON结果
-                    JSONObject jsonObject = JSON.parseObject(output);
-                    
-                    if (jsonObject.containsKey("error")) {
-                        throw new ZException(jsonObject.getString("error"));
-                    }
-                    
-                    // 创建StockBasic对象
-                    stockBasic = new StockBasic();
-                    stockBasic.setStockCode(stockCode);
-                    stockBasic.setStockShortName(jsonObject.getString("stockShortName"));
-                    stockBasic.setStockFullName(jsonObject.getString("stockFullName"));
-                    stockBasic.setIndustry(jsonObject.getString("industry"));
-                    
-                    // 填充交易所和市场类型
-                    fillExchangeAndMarket(stockCode, stockBasic);
-                    
-                    // 生成logo
-                    byte[] logoBytes = PictureUtil.generateLogoBytes(stockBasic.getStockFullName());
-                    String fileName = "logo_" + System.currentTimeMillis() + ".png";
-                    String logoUrl = minioUtils.upload("img", fileName, "image/png", new ByteArrayInputStream(logoBytes), logoBytes.length);
-                    stockBasic.setLogo(logoUrl);
-                    
-                    // 保存到数据库
-                    dao.save(stockBasic);
+                String stockInfo = parseSinaStockData(result);
+                if (stockInfo == null) {
+                    throw new ZException("获取股票信息失败，无法解析数据");
                 }
+                
+                String[] data = stockInfo.split(",");
+                if (data.length < 2) {
+                    throw new ZException("获取股票信息失败，数据格式错误");
+                }
+                
+                stockBasic = new StockBasic();
+                stockBasic.setStockCode(stockCode);
+                stockBasic.setStockFullName(data[0].trim());
+                stockBasic.setStockShortName(PinyinUtil.toUpperFirstLetter(data[0].trim()));
+                stockBasic.setIndustry(getIndustryByStockCode(stockCode));
+                
+                fillExchangeAndMarket(stockCode, stockBasic);
+                
+                byte[] logoBytes = PictureUtil.generateLogoBytes(stockBasic.getStockFullName());
+                String fileName = "logo_" + System.currentTimeMillis() + ".png";
+                String logoUrl = minioUtils.upload("img", fileName, "image/png", new ByteArrayInputStream(logoBytes), logoBytes.length);
+                stockBasic.setLogo(logoUrl);
+                
+                dao.save(stockBasic);
+            } catch (ZException e) {
+                throw e;
             } catch (Exception e) {
                 log.error("获取股票信息失败: {}", e.getMessage());
                 throw new ZException("获取股票信息失败: " + e.getMessage());
             }
+        }
+    }
+    
+    private String parseSinaStockData(String response) {
+        int startIndex = response.indexOf("\"");
+        int endIndex = response.lastIndexOf("\"");
+        if (startIndex >= 0 && endIndex > startIndex) {
+            return response.substring(startIndex + 1, endIndex);
+        }
+        return null;
+    }
+    
+    private String getIndustryByStockCode(String stockCode) {
+        if (stockCode.startsWith("600") || stockCode.startsWith("601") || stockCode.startsWith("603") || stockCode.startsWith("605")) {
+            return "沪市A股";
+        } else if (stockCode.startsWith("000")) {
+            return "深市主板";
+        } else if (stockCode.startsWith("002")) {
+            return "深市中小板";
+        } else if (stockCode.startsWith("300")) {
+            return "创业板";
+        } else if (stockCode.startsWith("688")) {
+            return "科创板";
+        } else {
+            return "其他";
         }
     }
 

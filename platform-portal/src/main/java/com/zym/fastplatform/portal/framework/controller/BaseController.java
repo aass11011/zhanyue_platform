@@ -18,8 +18,8 @@ public class BaseController<S extends BaseService<T,VO,DTO>,T extends BaseEntity
 
 
     @GetMapping("list")
-    public Result<Page<VO>> list(@RequestParam(defaultValue = "0", name = "pageNum") Integer page, @RequestParam(defaultValue = "10", name = "pageSize") Integer size, String sort, DTO condition) {
-        return Result.ok(service.findAll(page, size, sort, condition));
+    public Result<Page<VO>> list(String sort, DTO condition) {
+        return Result.ok(service.find(sort, condition));
     }
 
     @GetMapping("listAll")

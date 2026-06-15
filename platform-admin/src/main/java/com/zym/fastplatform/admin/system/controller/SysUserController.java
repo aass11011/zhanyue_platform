@@ -21,8 +21,8 @@ public class SysUserController {
     private SysUserService sysUserService;
 
     @GetMapping("list")
-    Result<Page<SysUserVO>> list(@RequestParam(defaultValue = "0",name = "pageNum")Integer page, @RequestParam(defaultValue = "10",name = "pageSize")Integer size, String sort, SysUserDTO user){
-        return Result.ok(sysUserService.findAll(page,size,sort,user));
+    Result<Page<SysUserVO>> list(String sort, SysUserDTO user){
+        return Result.ok(sysUserService.find(sort,user));
     }
 
     @GetMapping("{id}")

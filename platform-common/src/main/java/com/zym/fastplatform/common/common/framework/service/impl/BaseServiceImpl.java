@@ -61,11 +61,11 @@ public abstract class BaseServiceImpl<D extends BaseDao<T>,T extends BaseEntity,
     }
 
     @Override
-    public Page<VO> findAll(Integer page, Integer size, String sort, DTO condition) {
+    public Page<VO> find(String sort, DTO condition) {
         T entity = convertMapper.toEntity(condition);
         Specification<T> spec = buildSpecification(entity);
         Sort sortObj = parseSort(sort);
-        PageRequest pageRequest = PageRequest.of(page, size,sortObj);
+        PageRequest pageRequest = PageRequest.of(condition.getPageIndex(),condition.getPageSize(),sortObj);
         Page<T> res = dao.findAll(spec,pageRequest);
         res.getContent().forEach(this::handleUrl);
         return convertMapper.toVOPage(res);

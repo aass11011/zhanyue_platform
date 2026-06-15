@@ -44,8 +44,8 @@ public class SysRoleController {
         return Result.ok();
     }
     @GetMapping("list")
-    Result<Page<SysRoleVO>> list(@RequestParam(defaultValue = "0",name = "pageNum")Integer page, @RequestParam(defaultValue = "10",name = "pageSize")Integer size, String sort, SysRoleDTO sysRole){
-        return Result.ok(sysRoleService.findAll(page, size, sort, sysRole));
+    Result<Page<SysRoleVO>> list(String sort, SysRoleDTO sysRole){
+        return Result.ok(sysRoleService.find(sort, sysRole));
     }
 
 

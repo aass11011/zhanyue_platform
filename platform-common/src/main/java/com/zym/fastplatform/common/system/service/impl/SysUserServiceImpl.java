@@ -52,11 +52,11 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDao, SysUser, Sys
 
 
     @Override
-    public Page<SysUserVO> findAll(Integer page, Integer size, String sort, SysUserDTO condition) {
+    public Page<SysUserVO> find(String sort, SysUserDTO condition) {
         SysUser sysUser = convertMapper.toEntity(condition);
         Specification<SysUser> spec = buildSpecification(sysUser);
         Sort sortObj = JpaUtils.parseSort(sort);
-        PageRequest pageRequest = PageRequest.of(page, size,sortObj);
+        PageRequest pageRequest = PageRequest.of(condition.getPageIndex(), condition.getPageSize(),sortObj);
         if(condition.getDeptId() != null){
             List<SysDepartment> childDeptList = sysDepartmentDao.findAllChildDept(condition.getDeptId());
             List<Long> deptIds = childDeptList.stream().map(SysDepartment::getId).toList();

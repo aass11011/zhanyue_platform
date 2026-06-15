@@ -16,7 +16,7 @@ public interface BaseService <T extends BaseEntity,VO,DTO extends BaseDTO> {
 
     void deleteById(Long id);
 
-    Page<VO> findAll(Integer page, Integer size, String sort, DTO condition);
+    Page<VO> find(String sort, DTO condition);
 
     void delBatch(Long[] ids);
 
