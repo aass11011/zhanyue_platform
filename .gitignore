@@ -44,3 +44,4 @@ build/
 minio/data/img/**
 minio/logs/**
 minio/data/.minio.sys/**
+/doc/*.sql
