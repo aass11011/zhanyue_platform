@@ -4,8 +4,11 @@ import com.zym.fastplatform.common.book.entity.ReadNote;
 import com.zym.fastplatform.common.common.framework.dao.BaseDao;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
+
 @Repository
 public interface ReadNoteDao extends BaseDao<ReadNote> {
 
 
+    void deleteByBookIdIn(Collection<Long> bookIds);
 }
