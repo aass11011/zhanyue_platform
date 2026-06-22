@@ -45,7 +45,7 @@ public abstract class BaseServiceImpl<D extends BaseDao<T>,T extends BaseEntity,
     @Override
     public T findById(Long id) {
         T t = dao.findById(id).orElse(null);
-        handleUrl(t);
+//        handleUrl(t);
         return t;
     }
 
@@ -67,7 +67,7 @@ public abstract class BaseServiceImpl<D extends BaseDao<T>,T extends BaseEntity,
         Sort sortObj = parseSort(sort);
         PageRequest pageRequest = PageRequest.of(condition.getPageIndex(),condition.getPageSize(),sortObj);
         Page<T> res = dao.findAll(spec,pageRequest);
-        res.getContent().forEach(this::handleUrl);
+//        res.getContent().forEach(this::handleUrl);
         return convertMapper.toVOPage(res);
     }
 
@@ -82,7 +82,7 @@ public abstract class BaseServiceImpl<D extends BaseDao<T>,T extends BaseEntity,
         }else{
             list = dao.findAll(spec);
         }
-        list.forEach(this::handleUrl);
+//        list.forEach(this::handleUrl);
         return convertMapper.toVOList(list);
     }
 
@@ -127,7 +127,7 @@ public abstract class BaseServiceImpl<D extends BaseDao<T>,T extends BaseEntity,
     @Override
     public VO findVOById(Long id) {
         T t = dao.findById(id).orElse(null);
-        handleUrl(t);
+//        handleUrl(t);
         return convertMapper.toVO(t);
     }
 

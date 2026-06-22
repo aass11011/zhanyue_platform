@@ -5,6 +5,7 @@ import com.zym.fastplatform.common.common.framework.utils.StringUtils;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
 import io.minio.RemoveObjectArgs;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,7 +17,8 @@ import java.util.UUID;
 public class MinioUtils {
     private final MinioConfig config;
     private final MinioClient client;
-
+    @Value("${environment.address}")
+    private String address;
     public MinioUtils(MinioConfig config, MinioClient client) {
         this.config = config;
         this.client = client;
@@ -44,7 +46,7 @@ public class MinioUtils {
     public String upload(String bucket, String fileName, String contentType, ByteArrayInputStream byteArrayInputStream, int length) {
         try {
             client.putObject(PutObjectArgs.builder().bucket(bucket).contentType(contentType).stream(byteArrayInputStream,length,-1).object(fileName).build());
-            return "/"+bucket+"/"+fileName;
+            return address + "/"+bucket+"/"+fileName;
         }catch (Exception e){
             e.printStackTrace();
         }
