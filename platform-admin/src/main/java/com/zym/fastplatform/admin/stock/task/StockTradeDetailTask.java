@@ -1,5 +1,6 @@
 package com.zym.fastplatform.admin.stock.task;
 
+import com.zym.fastplatform.common.stock.dao.StockSseFundsDao;
 import com.zym.fastplatform.common.stock.dao.StockTradeDetailDao;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,8 @@ public class StockTradeDetailTask {
 
     @Autowired
     private StockTradeDetailDao stockTradeDetailDao;
-
+    @Autowired
+    private StockSseFundsDao stockSseFundsDao;
     /**
      * 每天凌晨1点执行，删除2个月之前的StockTradeDetail数据
      */
@@ -28,6 +30,18 @@ public class StockTradeDetailTask {
             log.info("清理完成，删除了{}条2个月之前的StockTradeDetail数据", deletedCount);
         } catch (Exception e) {
             log.error("清理StockTradeDetail数据时发生错误", e);
+        }
+    }
+
+    @Scheduled(cron = "0 0 0 * * ?")
+    public void cleanupSseData(){
+        log.info("开始执行Sse数据清理任务");
+        LocalDate halfYearsAgo = LocalDate.now().minusMonths(6).minusDays(1);
+        try {
+            int deletedCount = stockSseFundsDao.deleteByStatDateBefore(halfYearsAgo);
+            log.info("清理完成，删除了{}条SSE数据", deletedCount);
+        } catch (Exception e) {
+            log.error("清理SSE数据时发生错误", e);
         }
     }
 }
