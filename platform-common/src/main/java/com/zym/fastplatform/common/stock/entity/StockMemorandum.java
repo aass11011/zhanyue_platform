@@ -4,6 +4,9 @@ import com.zym.fastplatform.common.common.framework.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -31,4 +34,8 @@ public class StockMemorandum extends BaseEntity {
 
     @Column(name = "content", length = Integer.MAX_VALUE)
     private String content;
+
+    @Column(name = "remember_date")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate rememberDate;
 }
