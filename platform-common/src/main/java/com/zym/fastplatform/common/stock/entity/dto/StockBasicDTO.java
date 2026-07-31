@@ -25,8 +25,9 @@ public class StockBasicDTO extends BaseDTO {
     private String industry;
     @ExcelProperty("概念")
     private String concept;
-    private List<String> conceptList;
     private Byte status;
     private String logo;
     private String logoFilename;
+    @ExcelProperty("龙头板块")
+    private String leadingStockConcept;
 }

@@ -39,8 +39,8 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 @Slf4j
 @Service
 public class StockBasicServiceImpl extends BaseServiceImpl<StockBasicDao, StockBasic, StockBasicConvertMapper, StockBasicDTO, StockBasicVO> implements StockBasicService {
@@ -62,12 +62,6 @@ public class StockBasicServiceImpl extends BaseServiceImpl<StockBasicDao, StockB
         }
         entity.setStockShortName(PinyinUtil.toUpperFirstLetter(entity.getStockFullName()));
         fillExchangeAndMarket(stockCode, entity);
-        if(dto.getConceptList() != null && !dto.getConceptList().isEmpty()){
-            entity.setConcept(StringUtils.join(dto.getConceptList(),","));
-            fillDictDataAboutConcept(dto.getConceptList());
-        }else {
-            entity.setConcept("");
-        }
         if(StringUtils.isEmpty(entity.getLogo())){
             byte[] logoBytes = PictureUtil.generateLogoBytes(entity.getStockFullName());
             String fileName = "logo_" + System.currentTimeMillis() + ".png";
@@ -284,5 +278,63 @@ public class StockBasicServiceImpl extends BaseServiceImpl<StockBasicDao, StockB
 
         List<StockBasic> list = dao.findAll(specification);
         EasyExcel.write(outputStream, StockBasic.class).sheet("股票基本信息").doWrite(list);
+    }
+
+    @Override
+    public Map<String, List<StockBasicVO>> groupByLeadingStockConcept(String keyword) {
+        List<StockBasic> allStocks = dao.findAll();
+
+        Map<String, List<StockBasicVO>> result = new LinkedHashMap<>();
+
+        for (StockBasic stock : allStocks) {
+            String leadingConcepts = stock.getLeadingStockConcept();
+            if (StringUtils.isBlank(leadingConcepts)) {
+                continue;
+            }
+
+            String[] concepts = leadingConcepts.split(",");
+            for (String concept : concepts) {
+                String trimmedConcept = concept.trim();
+                if (StringUtils.isBlank(trimmedConcept)) {
+                    continue;
+                }
+                if (StringUtils.isNotBlank(keyword) && !trimmedConcept.contains(keyword.trim())) {
+                    continue;
+                }
+                result.computeIfAbsent(trimmedConcept, k -> new ArrayList<>())
+                        .add(convertMapper.toVO(stock));
+            }
+        }
+
+        return result;
+    }
+
+    @Override
+    public Map<String, List<StockBasicVO>> groupByConcept(String keyword) {
+        List<StockBasic> allStocks = dao.findAll();
+
+        Map<String, List<StockBasicVO>> result = new LinkedHashMap<>();
+
+        for (StockBasic stock : allStocks) {
+            String concepts = stock.getConcept();
+            if (StringUtils.isBlank(concepts)) {
+                continue;
+            }
+
+            String[] conceptArray = concepts.split(",");
+            for (String concept : conceptArray) {
+                String trimmedConcept = concept.trim();
+                if (StringUtils.isBlank(trimmedConcept)) {
+                    continue;
+                }
+                if (StringUtils.isNotBlank(keyword) && !trimmedConcept.contains(keyword.trim())) {
+                    continue;
+                }
+                result.computeIfAbsent(trimmedConcept, k -> new ArrayList<>())
+                        .add(convertMapper.toVO(stock));
+            }
+        }
+
+        return result;
     }
 }

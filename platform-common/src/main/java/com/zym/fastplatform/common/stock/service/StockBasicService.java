@@ -8,6 +8,9 @@ import com.zym.fastplatform.common.stock.entity.vo.StockBasicVO;
 import jakarta.servlet.ServletOutputStream;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+import java.util.Map;
+
 public interface StockBasicService extends BaseService<StockBasic, StockBasicVO, StockBasicDTO> {
     void importData(MultipartFile file);
 
@@ -16,4 +19,8 @@ public interface StockBasicService extends BaseService<StockBasic, StockBasicVO,
     void fillExchangeAndMarket(String stockCode, StockBasic entity);
 
     void getByStockCode(String stockCode);
+
+    Map<String, List<StockBasicVO>> groupByLeadingStockConcept(String keyword);
+
+    Map<String, List<StockBasicVO>> groupByConcept(String keyword);
 }

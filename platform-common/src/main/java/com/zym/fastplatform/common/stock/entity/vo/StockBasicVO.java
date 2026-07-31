@@ -24,4 +24,5 @@ public class StockBasicVO {
     private String remark;
     private String logo;
     private String logoFilename;
+    private String leadingStockConcept;
 }

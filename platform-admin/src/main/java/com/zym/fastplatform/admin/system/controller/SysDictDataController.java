@@ -19,8 +19,8 @@ public class SysDictDataController {
     private SysDictDataService sysDictDataService;
 
     @GetMapping("list")
-    public Result<Page<SysDictDataVO>> list(@RequestParam(defaultValue = "0") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize, String sort, SysDictDataDTO sysDictData) {
-        return Result.ok(sysDictDataService.findAll(pageNum,pageSize,sort,sysDictData));
+    public Result<Page<SysDictDataVO>> list(@RequestParam(defaultValue = "0") Integer pageIndex, @RequestParam(defaultValue = "10") Integer pageSize, String sort, SysDictDataDTO sysDictData) {
+        return Result.ok(sysDictDataService.findAll(pageIndex,pageSize,sort,sysDictData));
     }
 
     @GetMapping("listByType")

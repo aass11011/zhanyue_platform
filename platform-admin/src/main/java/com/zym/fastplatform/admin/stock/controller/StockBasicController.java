@@ -19,6 +19,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -76,5 +78,15 @@ public class StockBasicController extends BaseController<StockBasicService, Stoc
     public Result<Void> getByStockCode(@PathVariable String stockCode) {
         service.getByStockCode(stockCode);
         return Result.ok();
+    }
+
+    @GetMapping("/leading-concepts")
+    public Result<Map<String, List<StockBasicVO>>> groupByLeadingStockConcept(@RequestParam(required = false) String keyword) {
+        return Result.ok(service.groupByLeadingStockConcept(keyword));
+    }
+
+    @GetMapping("/concepts")
+    public Result<Map<String, List<StockBasicVO>>> groupByConcept(@RequestParam(required = false) String keyword) {
+        return Result.ok(service.groupByConcept(keyword));
     }
 }

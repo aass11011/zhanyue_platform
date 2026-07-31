@@ -42,4 +42,7 @@ public class StockBasic extends BaseEntity {
     private String logo;
     @ExcelIgnore
     private String logoFilename;
+    @ExcelProperty("龙头板块")
+    @FuzzyQuery
+    private String leadingStockConcept;
 }
