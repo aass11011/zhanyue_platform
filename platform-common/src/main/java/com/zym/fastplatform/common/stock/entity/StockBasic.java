@@ -9,6 +9,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Entity
@@ -34,15 +36,13 @@ public class StockBasic extends BaseEntity {
     @ExcelProperty("行业")
     @FuzzyQuery
     private String industry;
-    @ExcelProperty("概念")
-    @FuzzyQuery
-    private String concept;
+    @Transient
+    private List<String> concept;
     @ExcelIgnore
     @Url
     private String logo;
     @ExcelIgnore
     private String logoFilename;
-    @ExcelProperty("龙头板块")
-    @FuzzyQuery
-    private String leadingStockConcept;
+    @Transient
+    private List<String> leadingStockConcept;
 }

@@ -3,6 +3,7 @@ package com.zym.fastplatform.common.stock.entity.dto;
 import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.zym.fastplatform.common.common.framework.entity.BaseDTO;
+import com.zym.fastplatform.common.stock.entity.StockConcept;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,11 +24,8 @@ public class StockBasicDTO extends BaseDTO {
     private String marketType;
     @ExcelProperty("行业")
     private String industry;
-    @ExcelProperty("概念")
-    private String concept;
+    private List<StockConcept> stockConceptList;
     private Byte status;
     private String logo;
     private String logoFilename;
-    @ExcelProperty("龙头板块")
-    private String leadingStockConcept;
 }

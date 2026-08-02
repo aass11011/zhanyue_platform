@@ -16,7 +16,9 @@ import com.zym.fastplatform.common.common.framework.utils.StringUtils;
 import com.zym.fastplatform.common.common.framework.utils.PinyinUtil;
 import com.zym.fastplatform.common.stock.convert.StockBasicConvertMapper;
 import com.zym.fastplatform.common.stock.dao.StockBasicDao;
+import com.zym.fastplatform.common.stock.dao.StockConceptDao;
 import com.zym.fastplatform.common.stock.entity.StockBasic;
+import com.zym.fastplatform.common.stock.entity.StockConcept;
 import com.zym.fastplatform.common.stock.entity.dto.StockBasicDTO;
 import com.zym.fastplatform.common.stock.entity.vo.StockBasicVO;
 import com.zym.fastplatform.common.stock.service.StockBasicService;
@@ -27,6 +29,9 @@ import jakarta.servlet.ServletOutputStream;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,6 +46,9 @@ import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static com.zym.fastplatform.common.common.util.JpaUtils.parseSort;
+
 @Slf4j
 @Service
 public class StockBasicServiceImpl extends BaseServiceImpl<StockBasicDao, StockBasic, StockBasicConvertMapper, StockBasicDTO, StockBasicVO> implements StockBasicService {
@@ -48,6 +56,71 @@ public class StockBasicServiceImpl extends BaseServiceImpl<StockBasicDao, StockB
     private SysDictDataDao sysDictDataDao;
     @Autowired
     private MinioUtils minioUtils;
+    @Autowired
+    private StockConceptDao stockConceptDao;
+
+    @Override
+    public Page<StockBasicVO> find(String sort, StockBasicDTO condition) {
+        StockBasic stockBasic = convertMapper.toEntity(condition);
+
+        Specification<StockBasic> spec = (root, query, cb) -> {
+            List<Predicate> predicates = new ArrayList<>();
+
+            if (StringUtils.isNotBlank(stockBasic.getStockCode())) {
+                predicates.add(cb.equal(root.get("stockCode"), stockBasic.getStockCode()));
+            }
+            if (StringUtils.isNotBlank(stockBasic.getExchange())) {
+                predicates.add(cb.equal(root.get("exchange"), stockBasic.getExchange()));
+            }
+            if (StringUtils.isNotBlank(stockBasic.getMarketType())) {
+                predicates.add(cb.equal(root.get("marketType"), stockBasic.getMarketType()));
+            }
+            if (StringUtils.isNotBlank(stockBasic.getIndustry())) {
+                predicates.add(cb.equal(root.get("industry"), stockBasic.getIndustry()));
+            }
+            if (StringUtils.isNotBlank(stockBasic.getStockShortName())) {
+                predicates.add(cb.like(root.get("stockShortName"), "%" + stockBasic.getStockShortName() + "%"));
+            }
+            if (StringUtils.isNotBlank(stockBasic.getStockFullName())) {
+                predicates.add(cb.like(root.get("stockFullName"), "%" + stockBasic.getStockFullName() + "%"));
+            }
+
+            if (predicates.isEmpty()) {
+                return cb.conjunction();
+            }
+            return cb.and(predicates.toArray(new Predicate[0]));
+        };
+
+        Sort sortObj = parseSort(sort);
+        PageRequest pageRequest = PageRequest.of(condition.getPageIndex(), condition.getPageSize(), sortObj);
+        Page<StockBasic> res = dao.findAll(spec, pageRequest);
+
+        List<String> stockCodes = res.getContent().stream()
+                .map(StockBasic::getStockCode)
+                .collect(Collectors.toList());
+
+        if (!stockCodes.isEmpty()) {
+            List<StockConcept> concepts = stockConceptDao.findByStockCodeIn(stockCodes);
+            Map<String, List<StockConcept>> conceptsByStockCode = concepts.stream()
+                    .collect(Collectors.groupingBy(StockConcept::getStockCode));
+
+            for (StockBasic stock : res.getContent()) {
+                List<StockConcept> stockConcepts = conceptsByStockCode.getOrDefault(stock.getStockCode(), Collections.emptyList());
+                List<String> conceptList = stockConcepts.stream()
+                        .map(StockConcept::getConceptId)
+                        .collect(Collectors.toList());
+                stock.setConcept(conceptList);
+
+                List<String> leadingStockConcept = stockConcepts.stream()
+                        .filter(sc -> Boolean.TRUE.equals(sc.getLeadingFlag()))
+                        .map(StockConcept::getConceptId)
+                        .collect(Collectors.toList());
+                stock.setLeadingStockConcept(leadingStockConcept);
+            }
+        }
+
+        return convertMapper.toVOPage(res);
+    }
 
     @Override
     @Transactional
@@ -66,10 +139,15 @@ public class StockBasicServiceImpl extends BaseServiceImpl<StockBasicDao, StockB
             byte[] logoBytes = PictureUtil.generateLogoBytes(entity.getStockFullName());
             String fileName = "logo_" + System.currentTimeMillis() + ".png";
             String logoUrl = minioUtils.upload("img",fileName, "image/png", new ByteArrayInputStream(logoBytes),logoBytes.length);
-            // 保存URL到实体
             entity.setLogo(logoUrl);
         }
         dao.save(entity);
+        saveConcepts(stockCode, dto.getStockConceptList());
+    }
+
+    private void saveConcepts(String stockCode, List<StockConcept> stockConceptList) {
+        stockConceptDao.deleteByStockCode(stockCode);
+        stockConceptDao.saveAll(stockConceptList);
     }
 
     public void fillDictDataAboutConcept(List<String> conceptList) {
@@ -198,11 +276,14 @@ public class StockBasicServiceImpl extends BaseServiceImpl<StockBasicDao, StockB
     public void saveAll(List<StockBasic> list) {
         for (StockBasic entity : list) {
             fillExchangeAndMarket(entity.getStockCode(), entity);
-            if (StringUtils.isNotBlank(entity.getConcept())){
-                fillDictDataAboutConcept(List.of(entity.getConcept().split(",")));
+            if (!entity.getConcept().isEmpty()){
+                fillDictDataAboutConcept(entity.getConcept());
             }
         }
         dao.saveAll(list);
+//        for (StockBasic entity : list) {
+//            saveConcepts(entity.getStockCode(), entity.getStockConceptList());
+//        }
     }
 
     private class StockBasicExcelListener extends AnalysisEventListener<StockBasicDTO> {
@@ -284,17 +365,24 @@ public class StockBasicServiceImpl extends BaseServiceImpl<StockBasicDao, StockB
     public Map<String, List<StockBasicVO>> groupByLeadingStockConcept(String keyword) {
         List<StockBasic> allStocks = dao.findAll();
 
+        List<String> stockCodes = allStocks.stream()
+                .map(StockBasic::getStockCode)
+                .collect(Collectors.toList());
+
+        Map<String, List<StockConcept>> conceptsByStockCode = Collections.emptyMap();
+        if (!stockCodes.isEmpty()) {
+            List<StockConcept> concepts = stockConceptDao.findByStockCodeIn(stockCodes);
+            conceptsByStockCode = concepts.stream()
+                    .filter(sc -> Boolean.TRUE.equals(sc.getLeadingFlag()))
+                    .collect(Collectors.groupingBy(StockConcept::getStockCode));
+        }
+
         Map<String, List<StockBasicVO>> result = new LinkedHashMap<>();
 
         for (StockBasic stock : allStocks) {
-            String leadingConcepts = stock.getLeadingStockConcept();
-            if (StringUtils.isBlank(leadingConcepts)) {
-                continue;
-            }
-
-            String[] concepts = leadingConcepts.split(",");
-            for (String concept : concepts) {
-                String trimmedConcept = concept.trim();
+            List<StockConcept> stockConcepts = conceptsByStockCode.getOrDefault(stock.getStockCode(), Collections.emptyList());
+            for (StockConcept sc : stockConcepts) {
+                String trimmedConcept = sc.getConceptId().trim();
                 if (StringUtils.isBlank(trimmedConcept)) {
                     continue;
                 }
@@ -313,17 +401,24 @@ public class StockBasicServiceImpl extends BaseServiceImpl<StockBasicDao, StockB
     public Map<String, List<StockBasicVO>> groupByConcept(String keyword) {
         List<StockBasic> allStocks = dao.findAll();
 
+        List<String> stockCodes = allStocks.stream()
+                .map(StockBasic::getStockCode)
+                .collect(Collectors.toList());
+
+        Map<String, List<StockConcept>> conceptsByStockCode = Collections.emptyMap();
+        if (!stockCodes.isEmpty()) {
+            List<StockConcept> concepts = stockConceptDao.findByStockCodeIn(stockCodes);
+            conceptsByStockCode = concepts.stream()
+                    .filter(sc -> !Boolean.TRUE.equals(sc.getLeadingFlag()))
+                    .collect(Collectors.groupingBy(StockConcept::getStockCode));
+        }
+
         Map<String, List<StockBasicVO>> result = new LinkedHashMap<>();
 
         for (StockBasic stock : allStocks) {
-            String concepts = stock.getConcept();
-            if (StringUtils.isBlank(concepts)) {
-                continue;
-            }
-
-            String[] conceptArray = concepts.split(",");
-            for (String concept : conceptArray) {
-                String trimmedConcept = concept.trim();
+            List<StockConcept> stockConcepts = conceptsByStockCode.getOrDefault(stock.getStockCode(), Collections.emptyList());
+            for (StockConcept sc : stockConcepts) {
+                String trimmedConcept = sc.getConceptId().trim();
                 if (StringUtils.isBlank(trimmedConcept)) {
                     continue;
                 }

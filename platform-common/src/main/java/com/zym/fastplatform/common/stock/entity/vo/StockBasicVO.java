@@ -7,6 +7,7 @@ import lombok.Setter;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -18,11 +19,11 @@ public class StockBasicVO {
     private String exchange;
     private String marketType;
     private String industry;
-    private String concept;
+    private List<String> concept;
     private Byte status;
     private LocalDateTime createdTime;
     private String remark;
     private String logo;
     private String logoFilename;
-    private String leadingStockConcept;
+    private List<String> leadingStockConcept;
 }
