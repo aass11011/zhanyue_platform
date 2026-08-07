@@ -13,7 +13,7 @@ public class StockConcept extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String conceptId;
-    private String stockCode;
-    private Boolean leadingFlag;
+    private String concept;
+    private Integer levels;
+    private Long parentId;
 }

@@ -1,11 +1,10 @@
 // 文件路径: src/main/java/com/zym/fastplatform/stock/entity/vo/StockBasicVO.java
 package com.zym.fastplatform.common.stock.entity.vo;
 
+import com.zym.fastplatform.common.stock.entity.StockConceptRel;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -19,11 +18,10 @@ public class StockBasicVO {
     private String exchange;
     private String marketType;
     private String industry;
-    private List<String> concept;
     private Byte status;
     private LocalDateTime createdTime;
     private String remark;
     private String logo;
     private String logoFilename;
-    private List<String> leadingStockConcept;
+    private List<StockConceptRel> stockConceptList;
 }

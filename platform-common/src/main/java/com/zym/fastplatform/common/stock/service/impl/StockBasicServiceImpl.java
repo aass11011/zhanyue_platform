@@ -6,8 +6,6 @@ import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.excel.read.builder.ExcelReaderBuilder;
 import com.alibaba.excel.read.builder.ExcelReaderSheetBuilder;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.zym.fastplatform.common.common.util.MinioUtils;
 import com.zym.fastplatform.common.common.framework.exception.ZException;
 import com.zym.fastplatform.common.common.framework.service.impl.BaseServiceImpl;
@@ -16,9 +14,9 @@ import com.zym.fastplatform.common.common.framework.utils.StringUtils;
 import com.zym.fastplatform.common.common.framework.utils.PinyinUtil;
 import com.zym.fastplatform.common.stock.convert.StockBasicConvertMapper;
 import com.zym.fastplatform.common.stock.dao.StockBasicDao;
-import com.zym.fastplatform.common.stock.dao.StockConceptDao;
+import com.zym.fastplatform.common.stock.dao.StockConceptRelDao;
 import com.zym.fastplatform.common.stock.entity.StockBasic;
-import com.zym.fastplatform.common.stock.entity.StockConcept;
+import com.zym.fastplatform.common.stock.entity.StockConceptRel;
 import com.zym.fastplatform.common.stock.entity.dto.StockBasicDTO;
 import com.zym.fastplatform.common.stock.entity.vo.StockBasicVO;
 import com.zym.fastplatform.common.stock.service.StockBasicService;
@@ -57,7 +55,7 @@ public class StockBasicServiceImpl extends BaseServiceImpl<StockBasicDao, StockB
     @Autowired
     private MinioUtils minioUtils;
     @Autowired
-    private StockConceptDao stockConceptDao;
+    private StockConceptRelDao stockConceptRelDao;
 
     @Override
     public Page<StockBasicVO> find(String sort, StockBasicDTO condition) {
@@ -100,22 +98,12 @@ public class StockBasicServiceImpl extends BaseServiceImpl<StockBasicDao, StockB
                 .collect(Collectors.toList());
 
         if (!stockCodes.isEmpty()) {
-            List<StockConcept> concepts = stockConceptDao.findByStockCodeIn(stockCodes);
-            Map<String, List<StockConcept>> conceptsByStockCode = concepts.stream()
-                    .collect(Collectors.groupingBy(StockConcept::getStockCode));
+            List<StockConceptRel> concepts = stockConceptRelDao.findByStockCodeIn(stockCodes);
+            Map<String, List<StockConceptRel>> conceptsByStockCode = concepts.stream()
+                    .collect(Collectors.groupingBy(StockConceptRel::getStockCode));
 
             for (StockBasic stock : res.getContent()) {
-                List<StockConcept> stockConcepts = conceptsByStockCode.getOrDefault(stock.getStockCode(), Collections.emptyList());
-                List<String> conceptList = stockConcepts.stream()
-                        .map(StockConcept::getConceptId)
-                        .collect(Collectors.toList());
-                stock.setConcept(conceptList);
-
-                List<String> leadingStockConcept = stockConcepts.stream()
-                        .filter(sc -> Boolean.TRUE.equals(sc.getLeadingFlag()))
-                        .map(StockConcept::getConceptId)
-                        .collect(Collectors.toList());
-                stock.setLeadingStockConcept(leadingStockConcept);
+                stock.setStockConceptList(conceptsByStockCode.getOrDefault(stock.getStockCode(), Collections.emptyList()));
             }
         }
 
@@ -145,9 +133,9 @@ public class StockBasicServiceImpl extends BaseServiceImpl<StockBasicDao, StockB
         saveConcepts(stockCode, dto.getStockConceptList());
     }
 
-    private void saveConcepts(String stockCode, List<StockConcept> stockConceptList) {
-        stockConceptDao.deleteByStockCode(stockCode);
-        stockConceptDao.saveAll(stockConceptList);
+    private void saveConcepts(String stockCode, List<StockConceptRel> stockConceptRelList) {
+        stockConceptRelDao.deleteByStockCode(stockCode);
+        stockConceptRelDao.saveAll(stockConceptRelList);
     }
 
     public void fillDictDataAboutConcept(List<String> conceptList) {
@@ -369,20 +357,20 @@ public class StockBasicServiceImpl extends BaseServiceImpl<StockBasicDao, StockB
                 .map(StockBasic::getStockCode)
                 .collect(Collectors.toList());
 
-        Map<String, List<StockConcept>> conceptsByStockCode = Collections.emptyMap();
+        Map<String, List<StockConceptRel>> conceptsByStockCode = Collections.emptyMap();
         if (!stockCodes.isEmpty()) {
-            List<StockConcept> concepts = stockConceptDao.findByStockCodeIn(stockCodes);
+            List<StockConceptRel> concepts = stockConceptRelDao.findByStockCodeIn(stockCodes);
             conceptsByStockCode = concepts.stream()
                     .filter(sc -> Boolean.TRUE.equals(sc.getLeadingFlag()))
-                    .collect(Collectors.groupingBy(StockConcept::getStockCode));
+                    .collect(Collectors.groupingBy(StockConceptRel::getStockCode));
         }
 
         Map<String, List<StockBasicVO>> result = new LinkedHashMap<>();
 
         for (StockBasic stock : allStocks) {
-            List<StockConcept> stockConcepts = conceptsByStockCode.getOrDefault(stock.getStockCode(), Collections.emptyList());
-            for (StockConcept sc : stockConcepts) {
-                String trimmedConcept = sc.getConceptId().trim();
+            List<StockConceptRel> stockConceptRels = conceptsByStockCode.getOrDefault(stock.getStockCode(), Collections.emptyList());
+            for (StockConceptRel sc : stockConceptRels) {
+                String trimmedConcept = sc.getConcept().trim();
                 if (StringUtils.isBlank(trimmedConcept)) {
                     continue;
                 }
@@ -405,20 +393,20 @@ public class StockBasicServiceImpl extends BaseServiceImpl<StockBasicDao, StockB
                 .map(StockBasic::getStockCode)
                 .collect(Collectors.toList());
 
-        Map<String, List<StockConcept>> conceptsByStockCode = Collections.emptyMap();
+        Map<String, List<StockConceptRel>> conceptsByStockCode = Collections.emptyMap();
         if (!stockCodes.isEmpty()) {
-            List<StockConcept> concepts = stockConceptDao.findByStockCodeIn(stockCodes);
+            List<StockConceptRel> concepts = stockConceptRelDao.findByStockCodeIn(stockCodes);
             conceptsByStockCode = concepts.stream()
                     .filter(sc -> !Boolean.TRUE.equals(sc.getLeadingFlag()))
-                    .collect(Collectors.groupingBy(StockConcept::getStockCode));
+                    .collect(Collectors.groupingBy(StockConceptRel::getStockCode));
         }
 
         Map<String, List<StockBasicVO>> result = new LinkedHashMap<>();
 
         for (StockBasic stock : allStocks) {
-            List<StockConcept> stockConcepts = conceptsByStockCode.getOrDefault(stock.getStockCode(), Collections.emptyList());
-            for (StockConcept sc : stockConcepts) {
-                String trimmedConcept = sc.getConceptId().trim();
+            List<StockConceptRel> stockConceptRels = conceptsByStockCode.getOrDefault(stock.getStockCode(), Collections.emptyList());
+            for (StockConceptRel sc : stockConceptRels) {
+                String trimmedConcept = sc.getConcept().trim();
                 if (StringUtils.isBlank(trimmedConcept)) {
                     continue;
                 }

@@ -44,5 +44,5 @@ public class StockBasic extends BaseEntity {
     @ExcelIgnore
     private String logoFilename;
     @Transient
-    private List<String> leadingStockConcept;
+    private List<StockConceptRel> stockConceptList;
 }
