@@ -386,7 +386,7 @@ public class StockBasicServiceImpl extends BaseServiceImpl<StockBasicDao, StockB
     }
 
     @Override
-    public Map<String, List<StockBasicVO>> groupByConcept(String keyword) {
+    public Map<String, List<StockBasicVO>> groupByConcept(String keyword, Integer levels) {
         List<StockBasic> allStocks = dao.findAll();
 
         List<String> stockCodes = allStocks.stream()
@@ -398,6 +398,7 @@ public class StockBasicServiceImpl extends BaseServiceImpl<StockBasicDao, StockB
             List<StockConceptRel> concepts = stockConceptRelDao.findByStockCodeIn(stockCodes);
             conceptsByStockCode = concepts.stream()
                     .filter(sc -> !Boolean.TRUE.equals(sc.getLeadingFlag()))
+                    .filter(sc -> levels == null || levels.equals(sc.getLevels()))
                     .collect(Collectors.groupingBy(StockConceptRel::getStockCode));
         }
 

@@ -22,5 +22,5 @@ public interface StockBasicService extends BaseService<StockBasic, StockBasicVO,
 
     Map<String, List<StockBasicVO>> groupByLeadingStockConcept(String keyword);
 
-    Map<String, List<StockBasicVO>> groupByConcept(String keyword);
+    Map<String, List<StockBasicVO>> groupByConcept(String keyword, Integer levels);
 }

@@ -86,7 +86,8 @@ public class StockBasicController extends BaseController<StockBasicService, Stoc
     }
 
     @GetMapping("/concepts")
-    public Result<Map<String, List<StockBasicVO>>> groupByConcept(@RequestParam(required = false) String keyword) {
-        return Result.ok(service.groupByConcept(keyword));
+    public Result<Map<String, List<StockBasicVO>>> groupByConcept(@RequestParam(required = false) String keyword,
+                                                                   @RequestParam(required = false) Integer levels) {
+        return Result.ok(service.groupByConcept(keyword, levels));
     }
 }
